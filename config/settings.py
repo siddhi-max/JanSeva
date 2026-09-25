@@ -1,8 +1,10 @@
-
+```python
+import os
 from pathlib import Path
 
+import dj_database_url
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -10,9 +12,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # =========================================================
 
-SECRET_KEY = 'django-insecure-janseva-project-2026'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    'dev-only-janseva-secret-key'
+)
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -20,9 +26,16 @@ ALLOWED_HOSTS = [
     'testserver',
 ]
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get(
+    'RENDER_EXTERNAL_HOSTNAME'
+)
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 # =========================================================
-# APPLICATION DEFINITION
+# APPLICATIONS
 # =========================================================
 
 INSTALLED_APPS = [
@@ -43,6 +56,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
 
@@ -82,9 +97,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
-
                 'django.contrib.auth.context_processors.auth',
-
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -93,7 +106,7 @@ TEMPLATES = [
 
 
 # =========================================================
-# WSGI APPLICATION
+# WSGI
 # =========================================================
 
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -103,12 +116,27 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # DATABASE
 # =========================================================
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+
+if DATABASE_URL:
+
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+
+else:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # =========================================================
@@ -120,17 +148,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME':
             'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
-
     {
         'NAME':
             'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-
     {
         'NAME':
             'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
-
     {
         'NAME':
             'django.contrib.auth.password_validation.NumericPasswordValidator',
@@ -155,11 +180,25 @@ USE_TZ = True
 # STATIC FILES
 # =========================================================
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+
+    'staticfiles': {
+        'BACKEND':
+            'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
 
 
 # =========================================================
@@ -172,7 +211,37 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # =========================================================
-# DEFAULT PRIMARY KEY FIELD TYPE
+# CSRF
+# =========================================================
+
+CSRF_TRUSTED_ORIGINS = []
+
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(
+        f'https://{RENDER_EXTERNAL_HOSTNAME}'
+    )
+
+
+# =========================================================
+# PRODUCTION SECURITY
+# =========================================================
+
+if not DEBUG:
+
+    SECURE_SSL_REDIRECT = True
+
+    SESSION_COOKIE_SECURE = True
+
+    CSRF_COOKIE_SECURE = True
+
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    X_FRAME_OPTIONS = 'DENY'
+
+
+# =========================================================
+# DEFAULT PRIMARY KEY
 # =========================================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+```
