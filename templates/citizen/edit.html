@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Citizen - JanSeva</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #0d6efd;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 6px 0 0;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .title h2 {
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        .title p {
+            color: #666;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0d6efd;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 11px 25px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background: #198754;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background: #157347;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #5c636a;
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>JanSeva</h1>
+
+        <p>Citizen Service Management System</p>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="title">
+
+            <h2>Edit Citizen Information</h2>
+
+            <p>Update citizen details and service status</p>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+
+                <!-- Full Name -->
+
+                <div class="form-group">
+
+                    <label>Full Name</label>
+
+                    {{ form.full_name }}
+
+                    {% if form.full_name.errors %}
+                        <div class="error">
+                            {{ form.full_name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Date of Birth -->
+
+                <div class="form-group">
+
+                    <label>Date of Birth</label>
+
+                    {{ form.date_of_birth }}
+
+                    {% if form.date_of_birth.errors %}
+                        <div class="error">
+                            {{ form.date_of_birth.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Gender -->
+
+                <div class="form-group">
+
+                    <label>Gender</label>
+
+                    {{ form.gender }}
+
+                    {% if form.gender.errors %}
+                        <div class="error">
+                            {{ form.gender.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Mobile -->
+
+                <div class="form-group">
+
+                    <label>Mobile Number</label>
+
+                    {{ form.mobile_number }}
+
+                    {% if form.mobile_number.errors %}
+                        <div class="error">
+                            {{ form.mobile_number.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label>Email</label>
+
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <div class="error">
+                            {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- City -->
+
+                <div class="form-group">
+
+                    <label>City</label>
+
+                    {{ form.city }}
+
+                    {% if form.city.errors %}
+                        <div class="error">
+                            {{ form.city.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- District -->
+
+                <div class="form-group">
+
+                    <label>District</label>
+
+                    {{ form.district }}
+
+                    {% if form.district.errors %}
+                        <div class="error">
+                            {{ form.district.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- State -->
+
+                <div class="form-group">
+
+                    <label>State</label>
+
+                    {{ form.state }}
+
+                    {% if form.state.errors %}
+                        <div class="error">
+                            {{ form.state.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Pincode -->
+
+                <div class="form-group">
+
+                    <label>Pincode</label>
+
+                    {{ form.pincode }}
+
+                    {% if form.pincode.errors %}
+                        <div class="error">
+                            {{ form.pincode.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Aadhaar -->
+
+                <div class="form-group">
+
+                    <label>Aadhaar Number</label>
+
+                    {{ form.aadhaar_number }}
+
+                    {% if form.aadhaar_number.errors %}
+                        <div class="error">
+                            {{ form.aadhaar_number.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Service -->
+
+                <div class="form-group">
+
+                    <label>Service Type</label>
+
+                    {{ form.service_type }}
+
+                    {% if form.service_type.errors %}
+                        <div class="error">
+                            {{ form.service_type.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label>Service Status</label>
+
+                    {{ form.status }}
+
+                    {% if form.status.errors %}
+                        <div class="error">
+                            {{ form.status.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Address -->
+
+                <div class="form-group full">
+
+                    <label>Address</label>
+
+                    {{ form.address }}
+
+                    {% if form.address.errors %}
+                        <div class="error">
+                            {{ form.address.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="btn btn-update">
+                    Update Citizen
+                </button>
+
+
+                <a
+                    href="{% url 'citizen_detail' citizen.id %}"
+                    class="btn btn-back">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

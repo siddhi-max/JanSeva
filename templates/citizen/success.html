@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JanSeva - Registration Successful</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-box {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #123c69;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #555;
+            font-size: 17px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #123c69;
+            color: white;
+            text-decoration: none;
+            padding: 13px 30px;
+            border-radius: 6px;
+        }
+
+        .btn:hover {
+            background: #0b2949;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="success-box">
+
+        <div class="icon">
+            ✅
+        </div>
+
+        <h1>Registration Successful!</h1>
+
+        <p>
+            Citizen registration has been completed successfully.
+        </p>
+
+        <a href="{% url 'citizen_register' %}" class="btn">
+            Register Another Citizen
+        </a>
+
+    </div>
+
+</body>
+
+</html>

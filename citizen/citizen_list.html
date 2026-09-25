@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JanSeva - Citizen List</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #123c69;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 35px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .title h2 {
+            color: #123c69;
+        }
+
+        .register-btn {
+            background: #123c69;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #123c69;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background: #f5f8fc;
+        }
+
+        .view-btn {
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            padding: 8px 13px;
+            border-radius: 5px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="header">
+
+        <h1>JanSeva</h1>
+
+        <p>Citizen Service Management System</p>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="title">
+
+            <h2>Registered Citizens</h2>
+
+            <a href="{% url 'citizen_register' %}"
+               class="register-btn">
+
+                + Register New Citizen
+
+            </a>
+
+        </div>
+
+
+        {% if citizens %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Mobile</th>
+                        <th>City</th>
+                        <th>District</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for citizen in citizens %}
+
+                    <tr>
+
+                        <td>{{ citizen.id }}</td>
+
+                        <td>{{ citizen.full_name }}</td>
+
+                        <td>{{ citizen.mobile_number }}</td>
+
+                        <td>{{ citizen.city }}</td>
+
+                        <td>{{ citizen.district }}</td>
+
+                        <td>{{ citizen.service_type }}</td>
+
+                        <td>{{ citizen.status }}</td>
+
+                        <td>
+
+                            <a href="{% url 'citizen_detail' citizen.id %}"
+                               class="view-btn">
+
+                                View
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Citizens Registered</h3>
+
+            <p>Currently there are no citizen records.</p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="footer">
+
+        © 2026 JanSeva | Citizen Service Management System
+
+    </div>
+
+</body>
+
+</html>

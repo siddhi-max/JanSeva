@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JanSeva - Citizen List</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f4f7fb;
+            min-height: 100vh;
+        }
+
+
+        /* HEADER */
+
+        .header {
+            background: #123c69;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+
+        /* CONTAINER */
+
+        .container {
+            width: 95%;
+            max-width: 1300px;
+            margin: 35px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+
+        /* TITLE */
+
+        .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+
+        .title h2 {
+            color: #123c69;
+        }
+
+
+        /* REGISTER BUTTON */
+
+        .register-btn {
+            background: #123c69;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+        }
+
+
+        .register-btn:hover {
+            background: #0d2d4f;
+        }
+
+
+        /* SEARCH */
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+
+        .search-btn {
+            background: #198754;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+
+        .search-btn:hover {
+            background: #146c43;
+        }
+
+
+        .clear-btn {
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+        }
+
+
+        /* SEARCH RESULT */
+
+        .search-result {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+
+        /* TABLE */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        th {
+            background: #123c69;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        tr:hover {
+            background: #f5f8fc;
+        }
+
+
+        /* ACTION BUTTONS */
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+
+        .view-btn {
+            display: inline-block;
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+        .view-btn:hover {
+            background: #146c43;
+        }
+
+
+        .edit-btn {
+            display: inline-block;
+            background: #0d6efd;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+        .edit-btn:hover {
+            background: #0b5ed7;
+        }
+
+
+        .delete-btn {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+        .delete-btn:hover {
+            background: #bb2d3b;
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .title {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+
+            .search-box {
+                flex-direction: column;
+            }
+
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <h1>JanSeva</h1>
+
+    <p>Citizen Service Management System</p>
+
+</div>
+
+
+
+<!-- MAIN CONTAINER -->
+
+<div class="container">
+
+
+    <!-- TITLE -->
+
+    <div class="title">
+
+        <h2>Registered Citizens</h2>
+
+
+        <a href="{% url 'citizen_register' %}"
+           class="register-btn">
+
+            + Register New Citizen
+
+        </a>
+
+    </div>
+
+
+
+    <!-- SEARCH FORM -->
+
+    <form method="GET"
+          action="{% url 'citizen_list' %}"
+          class="search-box">
+
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search by name, mobile, Aadhaar, city or district"
+        >
+
+
+        <button
+            type="submit"
+            class="search-btn">
+
+            🔍 Search
+
+        </button>
+
+
+        <a
+            href="{% url 'citizen_list' %}"
+            class="clear-btn">
+
+            Clear
+
+        </a>
+
+
+    </form>
+
+
+
+    <!-- SEARCH RESULT -->
+
+    {% if search %}
+
+        <div class="search-result">
+
+            Search results for:
+
+            <strong>{{ search }}</strong>
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- CITIZEN TABLE -->
+
+    {% if citizens %}
+
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Full Name</th>
+
+                        <th>Mobile</th>
+
+                        <th>City</th>
+
+                        <th>District</th>
+
+                        <th>Service</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for citizen in citizens %}
+
+
+                        <tr>
+
+
+                            <td>
+                                {{ citizen.id }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.full_name }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.mobile_number }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.city }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.district }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.service_type }}
+                            </td>
+
+
+                            <td>
+                                {{ citizen.status }}
+                            </td>
+
+
+                            <td>
+
+
+                                <div class="action-buttons">
+
+
+                                    <!-- VIEW -->
+
+                                    <a
+                                        href="{% url 'citizen_detail' citizen.id %}"
+                                        class="view-btn"
+                                    >
+
+                                        View
+
+                                    </a>
+
+
+                                    <!-- EDIT -->
+
+                                    <a
+                                        href="{% url 'citizen_edit' citizen.id %}"
+                                        class="edit-btn"
+                                    >
+
+                                        Edit
+
+                                    </a>
+
+
+                                    <!-- DELETE -->
+
+                                    <a
+                                        href="{% url 'citizen_delete' citizen.id %}"
+                                        class="delete-btn"
+                                    >
+
+                                        Delete
+
+                                    </a>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <h3>No Citizens Found</h3>
+
+            <p>
+                No citizen record matches your search.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    © 2026 JanSeva | Citizen Service Management System
+
+</div>
+
+
+</body>
+
+</html>
